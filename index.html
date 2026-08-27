@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal Arcanjo SA - CP04</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%);
+      color: #eaeaea;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+    .container {
+      max-width: 780px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(233,30,99,0.3);
+      border-radius: 16px;
+      padding: 40px;
+      box-shadow: 0 0 40px rgba(233,30,99,0.15);
+    }
+    h1 {
+      color: #e91e63;
+      font-size: 2rem;
+      margin-bottom: 8px;
+    }
+    .subtitle { color: #9a9ab0; margin-bottom: 24px; font-size: 0.95rem; }
+    .badge {
+      display: inline-block;
+      background: #e91e63;
+      color: #fff;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: bold;
+      margin-bottom: 24px;
+    }
+    .info-card {
+      background: rgba(255,255,255,0.04);
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+    .info-card p { margin-bottom: 6px; }
+    .info-card strong { color: #e91e63; }
+    h2 {
+      color: #fff;
+      font-size: 1.2rem;
+      margin: 24px 0 10px;
+      border-left: 4px solid #e91e63;
+      padding-left: 10px;
+    }
+    p { line-height: 1.6; color: #cfcfe0; margin-bottom: 12px; }
+    code {
+      background: rgba(0,0,0,0.4);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: #ff8fab;
+      font-family: 'Consolas', monospace;
+    }
+    footer {
+      margin-top: 30px;
+      text-align: center;
+      color: #6a6a80;
+      font-size: 0.8rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <span class="badge">CHECKPOINT 04 · CONTAINERS</span>
+    <h1>Portal Arcanjo SA</h1>
+    <p class="subtitle">Piloto de containerização — prova de conceito "roda em qualquer lugar"</p>
+
+    <div class="info-card">
+      <p><strong>Nome:</strong> Fabrizio Maia; Victor Asfur; Vitor Shimizu; Rodrigo Paixão</p>
+      <p><strong>RM:</strong> RM551869; RM551684; RM550390; RM96869</p>
+      <p><strong>Turma:</strong> 4ESR</p>
+    </div>
+
+    <h2>O que são Namespaces?</h2>
+    <p>
+      Namespaces são o mecanismo do kernel Linux que dá a cada container a
+      ilusão de estar sozinho na máquina. Cada container recebe sua própria
+      visão isolada de recursos como processos (PID), rede (net), sistema de
+      arquivos (mnt), hostname (UTS) e usuários (user). Por exemplo, o
+      processo com PID 1 dentro do container não é o mesmo PID 1 do host —
+      é um número diferente, isolado dentro do seu próprio namespace. É por
+      isso que um container "acha" que está em uma máquina só dele, mesmo
+      compartilhando o mesmo kernel com dezenas de outros containers.
+    </p>
+
+    <h2>O que são Cgroups?</h2>
+    <p>
+      Cgroups (control groups) são o mecanismo que limita e controla quanto
+      de recurso físico cada container pode consumir: CPU, memória, disco e
+      rede. Enquanto os namespaces isolam <em>o que o container enxerga</em>,
+      os cgroups controlam <em>quanto o container pode usar</em>. Isso evita
+      que um único container consuma toda a CPU ou memória da máquina e
+      derrube as demais aplicações — essencial em ambiente compartilhado de
+      produção.
+    </p>
+
+    <h2>Por que isso importa para o Conselho?</h2>
+    <p>
+      Juntos, namespaces + cgroups são a base técnica que permite rodar
+      várias aplicações isoladas e com recursos controlados em uma única
+      máquina, sem depender de máquinas virtuais completas. Isso reduz custo
+      de infraestrutura, acelera o deploy e garante que "funciona na minha
+      máquina" também funcione em produção — exatamente o problema que a
+      Arcanjo SA está resolvendo com a padronização via <code>Docker</code>.
+    </p>
+
+    <footer>Arcanjo SA &middot; Piloto de Containers &middot; cp04</footer>
+  </div>
+</body>
+</html>
