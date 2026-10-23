@@ -1,0 +1,52 @@
+name: Security Pipeline
+
+on: [push, pull_request]
+
+permissions:
+  contents: read
+
+jobs:
+  # ---------------------------------------------------------------
+  # BARREIRA 1: segredos vazados (chaves, tokens, senhas) no código
+  # ---------------------------------------------------------------
+  gitleaks:
+    name: Gitleaks (segredos)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0   # histórico completo: acha segredo em commits antigos também
+      - uses: gitleaks/gitleaks-action@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # ---------------------------------------------------------------
+  # BARREIRA 2: código vulnerável (SAST) - ex.: uso de eval()
+  # ---------------------------------------------------------------
+  semgrep:
+    name: Semgrep (código vulnerável)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Instalar Semgrep
+        run: pip install semgrep
+      - name: Rodar Semgrep (falha se achar problema)
+        run: semgrep scan --config .semgrep/regras.yml --config p/javascript --error --metrics=off .
+
+  # ---------------------------------------------------------------
+  # BARREIRA 3: imagem Docker com CVE crítico (dependências do SO)
+  # ---------------------------------------------------------------
+  trivy:
+    name: Trivy (imagem Docker)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Build da imagem
+        run: docker build -t portal-arcanjo:${{ github.sha }} .
+      - name: Scan da imagem com Trivy
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          image-ref: portal-arcanjo:${{ github.sha }}
+          severity: CRITICAL
+          ignore-unfixed: true
+          exit-code: '1'

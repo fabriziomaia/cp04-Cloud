@@ -1,0 +1,8 @@
+rules:
+  - id: arcanjo-uso-de-eval
+    languages: [javascript]
+    severity: ERROR
+    message: >-
+      Uso de eval() detectado. eval executa texto como codigo e permite
+      injecao de codigo (RCE/XSS) se qualquer parte vier do usuario.
+    pattern: eval(...)
