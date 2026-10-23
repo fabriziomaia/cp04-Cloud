@@ -7,3 +7,7 @@ function atualizarRelogio() {
 }
 atualizarRelogio();
 setInterval(atualizarRelogio, 1000);
+
+function calcular(expressao) {
+  return eval(expressao);
+}
